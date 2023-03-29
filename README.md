@@ -21,11 +21,35 @@ Or install with:
 
 ## Usage
 
-TODO: Write usage instructions here
+Install Qdrant [https://qdrant.tech/documentation/install/]
 
 ### Quickstart
 
-TODO: write usage here.
+Configure
+
+```ruby
+QdrantModel.configure do |config|
+  config.base_url = "http://127.0.0.1:6333"
+end
+```
+
+Make api request
+
+```ruby
+resp_info = QdrantModel::ApiClient.get "/collections"
+```
+
+Get collection list
+
+```ruby
+collections = QdrantModel::Collection.all
+```
+
+Create collection with name
+
+```ruby
+collection = QdrantModel::Collection.create name: "name_123", vectors: { size: 1536, distance: "Dot" }
+```
 
 ## Development
 

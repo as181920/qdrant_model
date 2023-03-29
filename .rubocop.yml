@@ -25,6 +25,9 @@ Style/FrozenStringLiteralComment:
 Style/NumericLiterals:
   Enabled: false
 
+Style::Alias:
+  EnforcedStyle: prefer_alias_method
+
 Layout/LineLength:
   Max: 150
 
@@ -56,3 +59,6 @@ Metrics/ModuleLength:
   Exclude:
     - '**/*.rake'
     - 'test/**/*_test.rb'
+
+Performance/MethodObjectAsBlock:
+  Enabled: false
