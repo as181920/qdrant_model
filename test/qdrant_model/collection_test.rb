@@ -30,7 +30,7 @@ module QdrantModel
 
       collection = Collection.create name: "name_123", vectors: { size: 1, distance: "dot" }
 
-      assert collection.valid?
+      assert_predicate collection, :valid?
       assert_equal "name_123", collection.name
     end
   end

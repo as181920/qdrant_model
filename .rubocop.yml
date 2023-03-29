@@ -25,7 +25,7 @@ Style/FrozenStringLiteralComment:
 Style/NumericLiterals:
   Enabled: false
 
-Style::Alias:
+Style/Alias:
   EnforcedStyle: prefer_alias_method
 
 Layout/LineLength:
