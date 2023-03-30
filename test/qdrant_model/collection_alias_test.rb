@@ -11,6 +11,27 @@ module QdrantModel
       )
     end
 
+    it "should list all collections aliases" do
+      stub_request(:get, "http://127.0.0.1:6333/aliases").to_return(
+        status: 200,
+        body: {
+          time: 0,
+          status: "ok",
+          result: {
+            aliases: [
+              { collection_name: "c_name", alias_name: "a_name" }
+            ]
+          }
+        }.to_json
+      )
+
+      collection_aliases = CollectionAlias.all
+
+      refute_empty collection_aliases
+      assert_equal "c_name", collection_aliases.first.collection_name
+      assert_equal "a_name", collection_aliases.first.alias_name
+    end
+
     it "should create alias name for collection" do
       collection_alias = CollectionAlias.create collection_name: @collection.name, alias_name: "alias_name"
 

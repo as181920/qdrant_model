@@ -94,5 +94,27 @@ module QdrantModel
       assert Collection.new(name:).destroy
       assert Collection.destroy(name)
     end
+
+    it "should list aliases for collection" do
+      collection = Collection.new name: "c_name"
+      stub_request(:get, "http://127.0.0.1:6333/collections/#{collection.name}/aliases").to_return(
+        status: 200,
+        body: {
+          time: 0,
+          status: "ok",
+          result: {
+            aliases: [
+              { collection_name: "c_name", alias_name: "a_name" }
+            ]
+          }
+        }.to_json
+      )
+
+      collection_aliases = collection.aliases
+
+      refute_empty collection_aliases
+      assert_equal collection.name, collection_aliases.first.collection_name
+      assert_equal "a_name", collection_aliases.first.alias_name
+    end
   end
 end

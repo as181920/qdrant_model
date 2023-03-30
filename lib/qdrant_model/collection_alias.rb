@@ -5,6 +5,13 @@ module QdrantModel
     attr_accessor :collection_name, :alias_name
 
     class << self
+      def list
+        get("/aliases")
+          .dig("result", "aliases")
+          .map { |attrs| new(attrs) }
+      end
+      alias_method :all, :list
+
       def create(collection_name:, alias_name:)
         post(
           "/collections/aliases",

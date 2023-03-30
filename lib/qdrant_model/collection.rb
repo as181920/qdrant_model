@@ -45,5 +45,11 @@ module QdrantModel
       delete("/collections/#{name}")
         .then { |resp_info| resp_info["status"] == "ok" }
     end
+
+    def aliases
+      get("/collections/#{name}/aliases")
+        .then { |resp_info| resp_info.dig("result", "aliases") }
+        .map { |attrs| CollectionAlias.new(attrs) }
+    end
   end
 end
