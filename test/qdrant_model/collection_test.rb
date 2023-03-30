@@ -33,5 +33,66 @@ module QdrantModel
       assert_predicate collection, :valid?
       assert_equal "name_123", collection.name
     end
+
+    it "should show collection detailed info by name" do
+      stub_request(:get, "http://127.0.0.1:6333/collections/name_123").to_return(
+        status: 200,
+        body: {
+          time: 0,
+          status: "ok",
+          result: {
+            status: "green",
+            optimizer_status: "ok",
+            vectors_count: 0,
+            indexed_vectors_count: 0,
+            points_count: 0,
+            segments_count: 0,
+            config: {
+              params: {
+                vectors: { size: 1536, distance: "Cosine" },
+                shard_number: 1,
+                replication_factor: 1,
+                write_consistency_factor: 1,
+                on_disk_payload: false
+              },
+              hnsw_config: {},
+              optimizer_config: {},
+              wal_config: {},
+              quantization_config: nil
+            },
+            payload_schema: {}
+          }
+        }.to_json
+      )
+
+      collection = Collection.find "name_123"
+
+      assert_equal "name_123", collection.name
+      assert_equal 1536, collection.properties.dig("config", "params", "vectors", "size")
+    end
+
+    it "should update parameters for existing collection" do
+      name = "name_456"
+      stub_request(:patch, "http://127.0.0.1:6333/collections/#{name}")
+        .to_return(
+          status: 200,
+          body: { time: 0, status: "ok", result: true }.to_json
+        )
+
+      assert Collection.new(name:).update(optimizers_config: { deleted_threshold: 0 })
+      assert Collection.update(name, params: { replication_factor: 1 })
+    end
+
+    it "should drop collection and all associated data" do
+      name = "name_789"
+      stub_request(:delete, "http://127.0.0.1:6333/collections/#{name}")
+        .to_return(
+          status: 200,
+          body: { time: 0, status: "ok", result: true }.to_json
+        )
+
+      assert Collection.new(name:).destroy
+      assert Collection.destroy(name)
+    end
   end
 end

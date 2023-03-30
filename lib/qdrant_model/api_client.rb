@@ -43,5 +43,9 @@ module QdrantModel
           end
         end
     end
+
+    %w[GET POST PUT PATCH DELETE].each do |http_method|
+      delegate http_method.underscore.to_sym, to: self
+    end
   end
 end
