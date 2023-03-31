@@ -37,6 +37,8 @@ module QdrantModel
         end
 
         def parse_response(resp)
+          return if resp.body.blank?
+
           JSON.parse(resp.body).tap do |resp_info|
             # if resp_info["error"].present?
             raise ApiClient::ApiResponseError, resp_info.dig("status", "error") unless resp.success?

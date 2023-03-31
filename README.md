@@ -51,6 +51,27 @@ Create collection with name
 collection = QdrantModel::Collection.create name: "name_123", vectors: { size: 1536, distance: "Dot" }
 ```
 
+Upsert points to collection
+
+```ruby
+Point.upsert "collection_name", points: [{ id: 1, vector: { key_a: [1]*1536, key_b: [2]*1536 }, payload: { key: "value" } }, ...]
+```
+
+Update point
+```ruby
+Point.new(id: 1).upsert(vector: { key_a: [3]*1536, key_b: [4]*1536 }, payload: { key: "new value" })
+```
+
+Delete points
+```ruby
+Point.destroy(collection_name: "collection_name", ids: [1, 2, 3])
+```
+
+Delete point
+```ruby
+Point.new(collection_name: "collection_name", id: 1).destroy
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
