@@ -3,7 +3,7 @@ module QdrantModel
     include ActiveModel::API
     include ActiveModel::Validations
 
-    attr_accessor :id, :vector, :payload, :collection_name
+    attr_accessor :collection_name, :id, :vector, :payload, :score, :version
 
     validates :id, presence: true
 

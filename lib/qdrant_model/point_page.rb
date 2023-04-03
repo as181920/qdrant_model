@@ -6,7 +6,7 @@ module QdrantModel
 
     attr_accessor :page, :per, :points, :next_page_offset
 
-    delegate :empty?, :each, :[], to: :points
+    delegate :empty?, :each, :map, :[], to: :points
 
     def next_page?
       next_page_offset.present? && (points.size == per)
